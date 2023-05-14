@@ -1,0 +1,33 @@
+{
+	"name": "iconkitcli",
+	"version": "0.0.2",
+	"author": {
+		"name": "Liquidiqq"
+	},
+	"keywords": [
+		"svelte",
+		"sveltekit",
+		"icon",
+		"icons",
+		"svg",
+		"community",
+		"iconkit",
+		"liquidiqq",
+		"iconkit-cli",
+		"iconkit cli"
+	],
+	"license": "MIT",
+	"description": "Configure Iconkit in your Svelte/SvelteKit project",
+	"main": "index.js",
+	"bin": {
+		"iconkit": "index.js"
+	},
+	"scripts": {
+		"start": "node index.js"
+	},
+	"type": "module",
+	"dependencies": {
+		"@clack/prompts": "^0.6.3",
+		"kleur": "^4.1.5"
+	}
+}
