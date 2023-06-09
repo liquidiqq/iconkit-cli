@@ -1,6 +1,6 @@
 {
-	"name": "iconkitcli",
-	"version": "0.0.2",
+	"name": "iconkit-cli",
+	"version": "0.0.1",
 	"author": {
 		"name": "Liquidiqq"
 	},
@@ -17,7 +17,7 @@
 		"iconkit cli"
 	],
 	"license": "MIT",
-	"description": "Configure Iconkit in your Svelte/SvelteKit project",
+	"description": "Quickly setup Iconkit in Svelte/SvelteKit project",
 	"main": "index.js",
 	"bin": {
 		"iconkit": "index.js"

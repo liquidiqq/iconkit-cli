@@ -8,13 +8,11 @@
   </a>
 </p> -->
 
-<br />
-
 <h1 align="center" style="font-weight:600">
   Iconkit CLI
 </h1>
 
-The fastest way to add Iconkit to your Svelte/SvelteKit project with minimal setup. It installs `@liquidiqq/iconkit`, adds classes for icon sizes and imports them to your `+layout.svelte`. Iconkit is a set of community icons that are mainly optimized for the Svelte ecosystem. Read more [here](https://github.com/liquidiqq/iconkit#readme).
+Fastest way to add Iconkit to your Svelte/SvelteKit project with minimal setup. It installs `@liquidiqq/iconkit`, adds classes for icon sizes, and imports them to your `+layout.svelte`. Iconkit is a set of community icons that are mainly optimized for the Svelte ecosystem. Read more [here](https://github.com/liquidiqq/iconkit#readme).
 
 <br />
 
@@ -28,7 +26,7 @@ npm create svelte@latest [your-app]
 npx svelte-add@latest tailwindcss
 
 # run Iconkit CLI
-npx iconkitcli
+npx iconkit-cli
 ```
 
 <br/>
@@ -42,6 +40,8 @@ npx iconkitcli
 
 <Icon name="face-smile" />
 ```
+
+<br/>
 
 ## Docs & Searching Icons
 
