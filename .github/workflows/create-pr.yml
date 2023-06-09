@@ -3,7 +3,6 @@ name: Create Pull Request
 on:
   push:
     branches:
-      - main
       - dev
 
 jobs:
@@ -11,17 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Set Branch Name
-        id: branch_name
-        run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5.0.1
+
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.branch_name.outputs.branch }}
-          title: ${{ steps.branch_name.outputs.branch }}
-          body: Automated pull request created by GitHub Actions
+          branch: dev
+          title: Automatically created pull request
+          body: This pull request was automatically created by Github workflow.
+          base: main
