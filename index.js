@@ -22,14 +22,6 @@ async function runCLI() {
 						{ value: "no", label: "No, I'll do it myself", hint: "follow the docs to configure Iconkit" }
 					]
 				})
-			// pkgmanager: () =>
-			// 	p.select({
-			// 		message: "Install via:",
-			// 		options: [
-			// 			{ value: "npm", label: "npm" },
-			// 			{ value: "pnpm", label: "pnpm" }
-			// 		]
-			// 	})
 		},
 		{
 			onCancel: () => {
