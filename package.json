@@ -1,8 +1,16 @@
 {
 	"name": "iconkit-cli",
-	"version": "0.1.2",
+	"version": "0.1.1",
 	"author": {
 		"name": "Liquidiqq"
+	},
+	"homepage": "https://github.com/liquidiqq/iconkit-cli",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/liquidiqq/iconkit-cli.git"
+	},
+	"publishConfig": {
+		"access": "public"
 	},
 	"keywords": [
 		"svelte",
@@ -23,7 +31,11 @@
 		"iconkit": "index.js"
 	},
 	"scripts": {
-		"start": "node index.js"
+		"start": "node index.js",
+		"changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+		"appendchangelog": "conventional-changelog -p angular -i CHANGELOG.md -s -a",
+		"newchangelog": "conventional-changelog -p angular -o tmp-changelog.md",
+		"mergechangelog": "cat tmp-changelog.md CHANGELOG.md > updated-changelog.md && mv updated-changelog.md CHANGELOG.md && rm tmp-changelog.md"
 	},
 	"type": "module",
 	"dependencies": {
