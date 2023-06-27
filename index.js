@@ -18,7 +18,7 @@ async function runCLI() {
 				p.select({
 					message: "Configure Iconkit via the CLI?",
 					options: [
-						{ value: "yes", label: "Yes" },
+						{ value: "yes", label: "Yes", hint: "recommended" },
 						{ value: "no", label: "No, I'll do it myself", hint: "follow the docs to configure Iconkit" }
 					]
 				})

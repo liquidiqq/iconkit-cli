@@ -4,6 +4,7 @@ node_modules
 /.svelte-kit
 /package
 /dist
+icons.js
 /src
 .env
 .env.*

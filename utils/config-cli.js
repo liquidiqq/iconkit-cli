@@ -7,7 +7,10 @@ import * as c from "./colors.js"
 
 let tailwind,
 	layout,
-	iconkit = null
+	iconkit,
+	typescript,
+	tsfile,
+	jsfile = null
 
 import { logSpin } from "./cli-fns.js"
 import { execSync } from "child_process"
@@ -21,6 +24,16 @@ import { execSync } from "child_process"
 
 	fs.existsSync(i.layoutPath) ? (layout = true) : (layout = false)
 	fs.existsSync(i.iconkitCSSPath) ? (iconkit = true) : (iconkit = false)
+
+	try {
+		execSync(`npm list typescript`)
+		typescript = true
+	} catch (err) {
+		typescript = false
+	}
+
+	fs.existsSync(i.iconkitIconsTsFilePath) ? (tsfile = true) : (tsfile = false)
+	fs.existsSync(i.iconkitIconsJsFilePath) ? (jsfile = true) : (jsfile = false)
 })()
 
 export async function configCLI() {
@@ -178,6 +191,46 @@ export async function configCLI() {
 					await logSpin(s.stop(`${c.error} failed to set up iconkit.css in +layout.svelte`))
 				}
 			}
+		}
+	}
+
+	if (!typescript) {
+		// when iconkit-icons.js doesn't exist
+		if (!jsfile) {
+			// create iconkit-icons.js
+			try {
+				s.start("cli working")
+				fs.mkdirSync(path.dirname(i.iconkitIconsJsFilePath), { recursive: true })
+				fs.writeFileSync(i.iconkitIconsJsFilePath, i.iconkitIconsJsContent)
+
+				await logSpin(s.stop(`${c.success} iconkit-icons.js created`))
+			} catch (err) {
+				await logSpin(s.stop(`${c.error} failed to create iconkit-icons.js`))
+			}
+		} else {
+			s.start("cli working")
+
+			await logSpin(s.stop(`${c.info} iconkit-icons.js exists, check docs to configure custom icons`))
+		}
+	}
+
+	if (typescript) {
+		// when iconkit-icons.ts doesn't exist
+		if (!tsfile) {
+			// create iconkit-icons.ts
+			try {
+				s.start("cli working")
+				fs.mkdirSync(path.dirname(i.iconkitIconsTsFilePath), { recursive: true })
+				fs.writeFileSync(i.iconkitIconsTsFilePath, i.iconkitIconsTsContent)
+
+				await logSpin(s.stop(`${c.success} iconkit-icons.ts created`))
+			} catch (err) {
+				await logSpin(s.stop(`${c.error} failed to create iconkit-icons.ts`))
+			}
+		} else {
+			s.start("cli working")
+
+			await logSpin(s.stop(`${c.info} iconkit-icons.ts exists, check docs to configure custom icons`))
 		}
 	}
 }
