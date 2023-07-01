@@ -201,7 +201,7 @@ export async function configCLI() {
 	await addCustomIconImporToLayout()
 }
 async function addCustomIconImporToLayout() {
-	const filename = tsfile ? "iconkit-icons.ts" : "iconkit-icons.js"
+	const filename = typescript ? "iconkit-icons.ts" : "iconkit-icons.js"
 	const importRegex = /import\s+['"]\..\/iconkit-icons['"]/
 	const successMsg = `${filename} import added to +layout.svelte`
 	const errorMsg = `failed to add ${filename} import to +layout.svelte`
