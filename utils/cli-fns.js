@@ -72,7 +72,7 @@ export async function logPromise(message) {
 }
 
 // +++ log promise short
-async function logPromiseShort(msg) {
+export async function logPromiseShort(msg) {
 	return new Promise(resolve => {
 		setTimeout(() => {
 			resolve()
@@ -88,5 +88,15 @@ export async function logSpin(msg) {
 			resolve()
 			msg
 		}, 20)
+	})
+}
+
+// +++ log promise short
+export async function promiseHandler(time, msg) {
+	return new Promise(resolve => {
+		setTimeout(() => {
+			resolve()
+			msg
+		}, time)
 	})
 }

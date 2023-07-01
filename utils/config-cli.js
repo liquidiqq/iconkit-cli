@@ -12,7 +12,7 @@ let tailwind,
 	tsfile,
 	jsfile = null
 
-import { logSpin } from "./cli-fns.js"
+import { logSpin, promiseHandler } from "./cli-fns.js"
 import { execSync } from "child_process"
 ;(async function initFn() {
 	try {
@@ -35,10 +35,9 @@ import { execSync } from "child_process"
 	fs.existsSync(i.iconkitIconsTsFilePath) ? (tsfile = true) : (tsfile = false)
 	fs.existsSync(i.iconkitIconsJsFilePath) ? (jsfile = true) : (jsfile = false)
 })()
+const s = p.spinner()
 
 export async function configCLI() {
-	const s = p.spinner()
-
 	if (tailwind) {
 		if (!layout) {
 			// create layout and import iconkit global sizes
@@ -150,47 +149,12 @@ export async function configCLI() {
 		}
 		// ! when layout exists
 		if (layout) {
-			// import to layout if script exists
+			const filename = "iconkit.css"
+			const importRegex = /import\s+['"]\..\/iconkit.css['"]/
+			const successMsg = `added ${filename} import to +layout.svelte`
+			const errorMsg = `failed to add ${filename} import to +layout.svelte`
 
-			const layoutContent = fs.readFileSync(i.layoutPath, "utf-8")
-
-			const regex = /import\s+['"]\.\/iconkit.css['"]/
-			const match = layoutContent.match(regex)
-
-			if (match && regex.test(match[0])) {
-				s.start("cli working")
-				await logSpin(s.stop(`${c.info} +layout.svelte exists`))
-
-				s.start("cli working")
-				await logSpin(s.stop(`${c.info} iconkit.css import exists`))
-				return
-			}
-
-			const scriptIndex = layoutContent.indexOf("<script")
-
-			if (scriptIndex !== -1) {
-				const scriptCloseIndex = layoutContent.indexOf("</script>", scriptIndex)
-				const updatedLayoutContent = layoutContent.slice(0, scriptCloseIndex) + `\n${i.existingLayoutCSSImport}\n` + layoutContent.slice(scriptCloseIndex)
-
-				try {
-					s.start("cli working")
-					fs.writeFileSync(i.layoutPath, updatedLayoutContent)
-
-					await logSpin(s.stop(`${c.success} added iconkit.css import to +layout.svelte`))
-				} catch (err) {
-					await logSpin(s.stop(`${c.error} failed to add iconkit.css import to +layout.svelte`))
-				}
-			} else {
-				// import to layout if script does not exist
-				try {
-					s.start("cli working")
-					fs.writeFileSync(i.layoutPath, i.newLayoutCSSImport)
-
-					await logSpin(s.stop(`${c.success} basic iconkit.css setup added to +layout.svelte`))
-				} catch (err) {
-					await logSpin(s.stop(`${c.error} failed to set up iconkit.css in +layout.svelte`))
-				}
-			}
+			addImportToLayout(i.layoutPath, filename, importRegex, i.existingLayoutCSSImport, successMsg, errorMsg)
 		}
 	}
 
@@ -210,7 +174,7 @@ export async function configCLI() {
 		} else {
 			s.start("cli working")
 
-			await logSpin(s.stop(`${c.info} iconkit-icons.js exists, check docs to configure custom icons`))
+			await logSpin(s.stop(`${c.info} iconkit-icons.js exists`))
 		}
 	}
 
@@ -230,7 +194,60 @@ export async function configCLI() {
 		} else {
 			s.start("cli working")
 
-			await logSpin(s.stop(`${c.info} iconkit-icons.ts exists, check docs to configure custom icons`))
+			await logSpin(s.stop(`${c.info} iconkit-icons.ts exists`))
 		}
 	}
+
+	await addCustomIconImporToLayout()
+}
+async function addCustomIconImporToLayout() {
+	const filename = tsfile ? "iconkit-icons.ts" : "iconkit-icons.js"
+	const importRegex = /import\s+['"]\..\/iconkit-icons['"]/
+	const successMsg = `${filename} import added to +layout.svelte`
+	const errorMsg = `failed to add ${filename} import to +layout.svelte`
+
+	addImportToLayout(i.layoutPath, filename, importRegex, i.iconkitIconsImport, successMsg, errorMsg)
+}
+
+async function addImportToLayout(layoutPath, filename, importRegex, importContent, successMsg, errorMsg) {
+	const layoutContent = fs.readFileSync(layoutPath, "utf-8")
+
+	if (importExistsInLayout(layoutContent, importRegex)) {
+		// s.start("cli working")
+		// await logSpin(s.stop(`${c.info} +layout.svelte exists`))
+
+		s.start("cli working")
+		await logSpin(s.stop(`${c.info} ${filename} import exists in +layout.svelte`))
+		return
+	}
+
+	const scriptIndex = layoutContent.indexOf("<script")
+
+	if (scriptIndex !== -1) {
+		const scriptCloseIndex = layoutContent.indexOf("</script>", scriptIndex)
+		const updatedLayoutContent = layoutContent.slice(0, scriptCloseIndex) + `\n${importContent}\n` + layoutContent.slice(scriptCloseIndex)
+
+		try {
+			s.start("cli working")
+			fs.writeFileSync(layoutPath, updatedLayoutContent)
+
+			await logSpin(s.stop(`${c.success} ${successMsg}`))
+		} catch (err) {
+			await logSpin(s.stop(`${c.error} ${errorMsg}`))
+		}
+	} else {
+		try {
+			s.start("cli working")
+			fs.writeFileSync(layoutPath, importContent)
+
+			await logSpin(s.stop(`${c.success} ${successMsg}`))
+		} catch (err) {
+			await logSpin(s.stop(`${c.error} ${errorMsg}`))
+		}
+	}
+}
+
+function importExistsInLayout(layoutContent, importRegex) {
+	const match = layoutContent.match(importRegex)
+	return match && importRegex.test(match[0])
 }
