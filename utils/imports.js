@@ -170,14 +170,3 @@ extraMini.set({
 	//add more icons here same as above separated by a comma (,)
 })
 `
-
-export const iconkitIconsTsContent = `${iconkitIconsJsContent}
-
-/*
-For auto-completion in \`name\` prop of <Icon name="..." /> component, add all the
-above icon names to below array. E.g. if you have 'icecream' in \`extraOutline\`
-and \`extraSolid\`, you only need to add it once. This will give you type safey
-as well as auto-completion in <Icon name="..." /> component.
-*/
-export const customIconTypeSafety = ["smiley-colored", "instagram-colored", "fish", "game-controller", "hammer", "icecream"] as const
-`
